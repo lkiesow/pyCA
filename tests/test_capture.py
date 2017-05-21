@@ -23,7 +23,10 @@ class TestPycaCapture(unittest.TestCase):
         preview = os.path.join(self.cadir, 'preview.png')
         open(preview, 'a').close()
         config.config()['agent']['database'] = 'sqlite:///' + self.dbfile
-        config.config()['capture']['command'] = 'touch {{dir}}/{{name}}.mp4'
+        files = ['{{dir}}/{{name}}.mp4', '{{dir}}/{{name}}-2.mp4']
+        config.config()['capture']['command'] = 'touch ' + ' '.join(files)
+        config.config()['capture']['files'] = files
+        config.config()['capture']['flavors'] = ['x/source', 'y/source']
         config.config()['capture']['directory'] = self.cadir
         config.config()['capture']['preview'] = [preview]
         config.config()['service-capture.admin'] = ['']

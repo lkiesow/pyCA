@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-uuu
 '''
     pyca.db
     ~~~~¨~~
@@ -6,12 +6,13 @@
     Database specification for pyCA
 '''
 
+import enum
 import json
 import os.path
 import string
 from pyca.config import config
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, Text, LargeBinary, create_engine
+from sqlalchemy import Column, Integer, Text, LargeBinary, create_engine, Enum
 from sqlalchemy.orm import sessionmaker
 Base = declarative_base()
 
@@ -37,17 +38,7 @@ def get_session():
     return Session()
 
 
-class Constants():
-
-    @classmethod
-    def str(cls, value):
-        '''Convert status (id) to its string name.'''
-        for k, v in cls.__dict__.items():
-            if k[0] in string.ascii_uppercase and v == value:
-                return k.lower().replace('_', ' ')
-
-
-class Status(Constants):
+class Status(enum.IntEnum):
     '''Event status definitions
     '''
     UPCOMING = 1
@@ -59,7 +50,7 @@ class Status(Constants):
     FINISHED_UPLOADING = 7
 
 
-class ServiceStatus(Constants):
+class ServiceStatus(enum.IntEnum):
     '''Service status type definitions
     '''
     STOPPED = 1
@@ -67,7 +58,7 @@ class ServiceStatus(Constants):
     BUSY = 3
 
 
-class Service(Constants):
+class Service(enum.IntEnum):
     '''Service type definitions
     '''
     AGENTSTATE = 1
@@ -117,7 +108,7 @@ class BaseEvent():
     def status_str(self):
         '''Return status as string.
         '''
-        return Status.str(self.status)
+        return self.status.name
 
     def __repr__(self):
         '''Return a string representation of an artist object.
@@ -150,7 +141,7 @@ class RecordedEvent(Base, BaseEvent):
 
     __tablename__ = 'recorded_event'
 
-    status = Column('status', Integer(), nullable=False,
+    status = Column('status', Enum(), nullable=False,
                     default=Status.UPCOMING)
     tracks = Column('tracks', LargeBinary(), nullable=True)
 
@@ -182,8 +173,8 @@ class ServiceStates(Base):
 
     __tablename__ = 'service_states'
 
-    type = Column('type', Integer(), nullable=False, primary_key=True)
-    status = Column('status', Integer(), nullable=False,
+    type = Column('type', Enum(), nullable=False, primary_key=True)
+    status = Column('status', Enum(), nullable=False,
                     default=ServiceStatus.STOPPED)
 
     def __init__(self, service=None):
