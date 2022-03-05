@@ -131,3 +131,29 @@ div.logs pre {
     padding: 10px;
     font-family: sans;
 }
+
+nav {
+    position: fixed;
+    top: 325px;
+    width: 160px;
+    left: 50%;
+    margin-left: -580px;
+}
+
+nav a {
+    text-decoration: none;
+    color: black;
+    display: block;
+    padding: 2px 8px;
+}
+
+nav a:hover {
+    color: #666;
+    border-left: 1px solid silver;
+}
+
+@media only screen and (max-width: 1200px) {
+  nav {
+    display: none;
+  }
+}

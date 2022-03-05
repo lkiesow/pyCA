@@ -47,9 +47,16 @@
             </div>
         </summary>
 
+        <nav>
+            <a href=#_preview>Preview Images</a>
+            <a href=#recordings>Recordings</a>
+            <a href=#_status>Status</a>
+            <a href=#_logs v-if="logs.length > 0">Logs</a>
+        </nav>
+
         <main class=center>
 
-            <section id=preview>
+            <section id=_preview>
                 <h2>Preview Images</h2>
                 <div v-if="previews && previews.length">
                     <Preview v-for="item in previews" v-bind:image="item" v-bind:key="item.id">
@@ -94,7 +101,7 @@
 
             </section>
             <section>
-                <h2>Status</h2>
+                <h2 id=_status>Status</h2>
                 <table>
                     <template>
                         <Metrics v-for="item in metrics" v-bind:metric="item" v-bind:key="item.header">
@@ -104,7 +111,7 @@
             </section>
 
             <section v-if="logs.length > 0">
-                <h2>Logs</h2>
+                <h2 id=_logs>Logs</h2>
                 <div class=logs>
                     <pre>
                         <template v-for="item in logs" v-bind:metric="item">
